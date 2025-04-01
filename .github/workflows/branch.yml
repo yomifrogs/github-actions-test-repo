@@ -4,7 +4,7 @@ name: branch
 on:
     workflow_dispatch:
 jobs:
-    dummy:
+    run:
       if: ${{ false }}
       runs-on: ubuntu-latest
       steps:
