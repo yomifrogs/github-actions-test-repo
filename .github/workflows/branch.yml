@@ -2,10 +2,11 @@
 name: branch
 
 on:
-    workflow_dispatch:
+  workflow_run:
+    workflows: ["schedule"]
 jobs:
     run:
-      if: ${{ false }}
+      # if: ${{ false }}
       runs-on: ubuntu-latest
       steps:
         - name: Run script
