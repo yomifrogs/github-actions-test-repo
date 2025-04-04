@@ -8,8 +8,9 @@ on:
 jobs:
     run:
       runs-on: ubuntu-latest
-      if: ${{ false }}
       steps:
-        - name: skip
-          run: echo "skip"
-
+        - name: Run script
+          run: |
+            echo ${{ vars.TEST_ENV }}
+            echo ${{ github.ref_name }}
+            echo test, and deploy your project.
