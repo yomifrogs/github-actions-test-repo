@@ -7,12 +7,5 @@ on:
       - test
 jobs:
     run:
-      # if: ${{ false }}
-      runs-on: ubuntu-latest
-      steps:
-        - name: Run script
-          run: |
-            echo ${{ vars.TEST_ENV }}
-            echo ${{ github.ref_name }}
-            echo test, and deploy your project.
+      if: ${{ false }}
 
