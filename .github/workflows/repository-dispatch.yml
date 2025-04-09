@@ -34,7 +34,7 @@ jobs:
 
       - name: Repository dispatch
         run: |
-          curl -X POST https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository.name }} /dispatches \
+          curl -X POST https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/dispatches \
           -H "$REQUEST_HEADER" \
           -H "Authorization: token ${{ github.token }}" \
           -d "$REQUEST_BODY"
