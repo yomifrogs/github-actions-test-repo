@@ -24,17 +24,15 @@ jobs:
           echo "Event Type: ${{ github.event.inputs.event_type }}"
           echo "Branch: ${{ github.event.inputs.branch }}"
 
-      - name: Set var of request header
-        run: |
-          echo "REQUEST_HEADER='Accept:application/vnd.github.everest-preview+json'" >> $GITHUB_ENV
-
-      - name: Set var of request body
-        run: |
-          echo "REQUEST_BODY='{\"event_type\": \"${{ github.event.inputs.event_type }}\", \"client_payload\": { \"repository\": \"${{ github.repository }}\", \"branch\": \"${{ github.event.inputs.branch }}\"}}'" >> $GITHUB_ENV
-
       - name: Repository dispatch
         run: |
           curl -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \
-          -H "$REQUEST_HEADER" \
+          -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{ secrets.PAT }}" \
-          -d "$REQUEST_BODY"
+          -d '{
+            "event_type": "${{ github.event.inputs.event_type }}",
+            "client_payload": {
+              "repository": "${{ github.repository }}",
+              "branch": "${{ github.event.inputs.branch }}"
+            }
+          }'
