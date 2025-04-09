@@ -36,5 +36,5 @@ jobs:
         run: |
           curl -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \
           -H "$REQUEST_HEADER" \
-          -H "Authorization: token ${{ github.token }}" \
+          -H "Authorization: token ${{ secrets.PAT }}" \
           -d "$REQUEST_BODY"
