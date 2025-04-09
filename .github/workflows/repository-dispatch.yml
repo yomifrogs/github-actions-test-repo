@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      event_type:
+        description: 'Event Type'
+        required: false
+        default: 'DefaultEvent'
+      branch:
+        description: 'Branch name'
+        required: true
+
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo input event_type
+        run: |
+          echo "Event Type: ${{ github.event.inputs.event_type }}"
+          echo "Branch: ${{ github.event.inputs.branch }}"
+
+      - name: Set var of request header
+        run: |
+          echo "REQUEST_HEADER='Accept:application/vnd.github.everest-preview+json'" >> $GITHUB_ENV
+
+      - name: Set var of request body
+        run: |
+          echo "REQUEST_BODY='{\"event_type\": \"${{ github.event.inputs.event_type }}\", \"client_payload\": { \"repository\": \"$GITHUB_REPOSITORY\", \"tag_name\": \"$RELEASE_VERSION\", \"branch\": \"${{ github.event.inputs.branch }}\"}}'" >> $GITHUB_ENV
+
+      - name: Repository dispatch
+        run: |
+          curl -X POST https://api.github.com/repos/${{ github.repository_owner }}/${{ github.event.inputs.branch }}/dispatches \
+          -H "$REQUEST_HEADER" \
+          -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+          -d "$REQUEST_BODY"
