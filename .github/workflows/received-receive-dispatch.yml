@@ -1,0 +1,25 @@
+name: Receive Repository Dispatch
+
+on:
+  repository_dispatch:
+    types: [DefaultEvent] # event_typeで指定されたタイプを受け取ります。必要に応じて追加できます
+
+jobs:
+  echo-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Echo received event
+        run: |
+          echo "Repository Dispatch イベントを受信しました！"
+          echo "イベントタイプ: ${{ github.event.action }}"
+          echo "送信元リポジトリ: ${{ github.event.client_payload.repository }}"
+          echo "ブランチ: ${{ github.event.client_payload.branch }}"
+          echo "タグ名: ${{ github.event.client_payload.tag_name }}"
+          
+      - name: Print all client payload data
+        run: |
+          echo "クライアントペイロードの全データ:"
+          echo '${{ toJson(github.event.client_payload) }}'
