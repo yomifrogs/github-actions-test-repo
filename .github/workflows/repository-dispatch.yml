@@ -30,11 +30,11 @@ jobs:
 
       - name: Set var of request body
         run: |
-          echo "REQUEST_BODY='{\"event_type\": \"${{ github.event.inputs.event_type }}\", \"client_payload\": { \"repository\": \"$GITHUB_REPOSITORY\", \"tag_name\": \"$RELEASE_VERSION\", \"branch\": \"${{ github.event.inputs.branch }}\"}}'" >> $GITHUB_ENV
+          echo "REQUEST_BODY='{\"event_type\": \"${{ github.event.inputs.event_type }}\", \"client_payload\": { \"repository\": \"${{ github.repository }}\", \"branch\": \"${{ github.event.inputs.branch }}\"}}'" >> $GITHUB_ENV
 
       - name: Repository dispatch
         run: |
-          curl -X POST https://api.github.com/repos/${{ github.repository_owner }}/${{ github.event.inputs.branch }}/dispatches \
+          curl -X POST https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository_name }} /dispatches \
           -H "$REQUEST_HEADER" \
           -H "Authorization: token ${{ github.token }}" \
           -d "$REQUEST_BODY"
